@@ -2,6 +2,7 @@ class Sorter {
  
   constructor() {
     this.array = new Array();
+    this.comparator = (a, b) => a-b;
   }
 
   add(element) {
@@ -22,46 +23,20 @@ class Sorter {
   }
 
   sort(indices) {
-
-    var arr1 = new Array();
-    var arr2 = new Array();
- 
-    for(var i=0; i<indices.length; i++){
-      arr1[i]=this.array[indices[i]]; 
+    const sortedArr = [];
+    const sortedIndices = indices.sort((a,b) => a-b);
+    for (let i = 0; i < sortedIndices.length; i++) {
+      sortedArr.push(this.array[sortedIndices[i]]);
     }
-    if (indices[0]< indices[1]){
-    for(var h = indices.length-1 ; h >= 0; h--) {
-      this.array.splice(indices[h], 1);
-      }
+    sortedArr.sort(this.comparator);
+    for (let i = 0; i < sortedIndices.length; i++){
+      this.array[sortedIndices[i]] = sortedArr.shift();
     }
-    else {
-      for(var h = 0 ; h<indices.length; h++) {
-        this.array.splice(indices[h], 1);
-        }
-      }
-    arr1.sort(function(a, b) {
-      if (indices[0]< indices[1]){
-        return a - b;
-      }
-      else {
-        return b - a;
-      }
-    });
-    if (indices[0]< indices[1]){
-      for (var j=0; j<indices.length; j++) {
-       this.array.splice(indices[j],0,arr1[j]);
-      }
-    }
-    else {
-      for (var j=indices.length-1; j>=0; j--) {
-        this.array.splice(indices[j],0,arr1[j]);
-      }
-    }
-       return this.array;
+    return this.array;
   }
 
   setComparator(compareFunction) {
- 
+     this.comparator = compareFunction;
   }
 }
 
